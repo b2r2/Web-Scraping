@@ -21,7 +21,7 @@ def load_content(url, session):
     return request.text
 
 
-def parse_text_datafile(content):
+def parse_text_data(content):
     soup = BeautifulSoup(content, 'lxml')
     return soup.__str__()
 
@@ -32,7 +32,7 @@ def to_count_rus_letters(text):
 
 def main():
     data = load_content(url, s)
-    content = parse_text_datafile(data)
+    content = parse_text_data(data)
     print(to_count_rus_letters(content))
 
 
