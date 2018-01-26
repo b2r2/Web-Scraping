@@ -6,7 +6,7 @@ import re
 from bs4 import BeautifulSoup
 
 
-url = 'telegra.ph/Ispolzovanie-regulyarnyh-vyrazhenij-v-Python-dlya-novichkov-08-04'
+url = 'telegra.ph/Nachnem-rabotu-s-Mock-v-Python-01-26'
 
 headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/58.0.3029.81 Chrome/58.0.3029.81 Safari/537.36'
@@ -23,7 +23,7 @@ def load_content(url, session):
 
 def parse_text_data(content):
     soup = BeautifulSoup(content, 'lxml')
-    return soup.__str__()
+    return soup.find('article', {'class': 'tl_article_content'}).text
 
 
 def to_count_rus_letters(text):
