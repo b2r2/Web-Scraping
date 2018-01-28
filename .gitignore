@@ -1,1 +1,2 @@
-*.html
+pyqt5/
+__pycache__/
