@@ -27,12 +27,3 @@ class WebScraping:
 
     def input_data(self):
         pass
-
-
-def main():
-    scaping = WebScraping()
-    scaping.run()
-
-
-if __name__ == '__main__':
-    main()
