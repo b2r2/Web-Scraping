@@ -13,10 +13,10 @@ from PyQt5.QtGui import QIcon
 
 
 class OpenApp(QWidget):
-    def __init__(self, app, scaping):
+    def __init__(self, app, scraping):
         super().__init__()
         self.app = app
-        self.scaping = scaping
+        self.scraping = scraping
         self.__init_ui()
 
     def __init_ui(self):
@@ -25,7 +25,7 @@ class OpenApp(QWidget):
 
         self.url_edit = QLineEdit(self)
 
-        self.url_button.clicked.connect(self.on_click)
+        self.url_button.clicked.connect(self.__on_click)
         self.__set_layout()
         self.__close_app()
 
@@ -57,10 +57,17 @@ class OpenApp(QWidget):
         qr.moveCenter(cp)
         self.move(qr.topLeft())
 
+    def __get_rus_letters(self, url):
+        data = self.scraping.load_content(url)
+        content = self.scraping.parse_text_data(data)
+        return self.scraping.to_count_rus_letters(content)
+
     @pyqtSlot()
-    def on_click(self):
-        result = self.url_edit.text()
-        QMessageBox.question(self, 'Counter', 'All Russian symbols:\n' + result,
+    def __on_click(self):
+        url = self.url_edit.text()
+        result = self.__get_rus_letters(url)
+        output_text = 'All Russian symbols:\n'
+        QMessageBox.question(self, 'Counter', output_text + str(result),
                              QMessageBox.Ok, QMessageBox.Ok)
         self.url_edit.setText('')
 
@@ -69,8 +76,8 @@ class OpenApp(QWidget):
 
 
 def main():
-    scaping = web_scraping.WebScraping()
-    app = OpenApp(QApplication(sys.argv), scaping)
+    scraping = web_scraping.WebScraping()
+    app = OpenApp(QApplication(sys.argv), scraping)
     app.run()
 
 
