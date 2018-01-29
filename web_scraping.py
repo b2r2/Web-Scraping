@@ -24,6 +24,3 @@ class WebScraping:
 
     def to_count_rus_letters(self, text):
         return len(''.join(re.findall('[А-Яа-я]+', text)))
-
-    def input_data(self):
-        pass
