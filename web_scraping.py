@@ -22,5 +22,6 @@ class WebScraping:
         soup = BeautifulSoup(content, 'lxml')
         return soup.find('article', {'class': 'tl_article_content'}).text
 
-    def to_count_rus_letters(self, text):
-        return len(''.join(re.findall('[А-Яа-я]+', text)))
+    def get_rus_letters(self, text):
+        rus_letters = re.findall('[А-Яа-я]+', text)
+        return len(''.join(rus_letters))
