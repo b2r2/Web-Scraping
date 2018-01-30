@@ -64,7 +64,7 @@ class Application(QWidget):
         result = self.__get_rus_letters(url)
         output_text = 'All Russian symbols:\n'
         QMessageBox.question(self, 'Counter', output_text + str(result),
-                             QMessageBox.Ok, QMessageBox.Ok)
+                             QMessageBox.Ok)
         self.url_edit.setText('')
 
     def run(self):
