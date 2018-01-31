@@ -6,7 +6,7 @@ import re
 from bs4 import BeautifulSoup
 
 
-class WebScraping:
+class Scraper():
     def __init__(self):
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/58.0.3029.81 Chrome/58.0.3029.81 Safari/537.36'
@@ -22,6 +22,6 @@ class WebScraping:
         soup = BeautifulSoup(content, 'lxml')
         return soup.find('article', {'class': 'tl_article_content'}).text
 
-    def get_rus_letters(self, text):
+    def get_text_size(self, text):
         rus_letters = re.findall('[А-Яа-я]+', text)
         return len(''.join(rus_letters))
