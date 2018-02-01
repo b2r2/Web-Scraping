@@ -31,7 +31,6 @@ class MainWindow(QWidget):
 
         url_button.clicked.connect(lambda: web_scraping.on_click(url_input.text(), QMessageBox))
         quit_button.clicked.connect(QCoreApplication.instance().quit)
-        self.clear()
 
         self.__move_to_center(300, 10)
         self.setWindowTitle('Counter')
