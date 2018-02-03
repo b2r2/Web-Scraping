@@ -1,4 +1,4 @@
-import web_scraping
+import os
 from PyQt5.QtWidgets import QWidget
 from PyQt5.QtWidgets import QPushButton
 from PyQt5.QtWidgets import QGridLayout
@@ -8,11 +8,13 @@ from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
+from web_scraping import Scraper
 
 
 class MainWindow(QWidget):
     def __init__(self):
-        super().__init__()
+        super(MainWindow, self).__init__()
         self.__init_ui()
         self.show()
 
@@ -29,7 +31,7 @@ class MainWindow(QWidget):
 
         self.setLayout(grid)
 
-        url_button.clicked.connect(lambda: web_scraping.on_click(url_input.text(), QMessageBox))
+        url_button.clicked.connect(lambda: self.__on_click(url_input.text()))
         quit_button.clicked.connect(QCoreApplication.instance().quit)
 
         self.__move_to_center(300, 10)
@@ -42,3 +44,13 @@ class MainWindow(QWidget):
         center_point = QDesktopWidget().availableGeometry().center()
         rectangle.moveCenter(center_point)
         self.move(rectangle.topLeft())
+
+    def __on_click(self, url):
+        size_text = Scraper().run(url)
+        output_text = 'All Russian symbols:' + os.linesep
+        message_box = QMessageBox()
+        message_box.setText(output_text + str(size_text))
+        message_box.setWindowTitle('Counter')
+        message_box.setIcon(QMessageBox.Information)
+        message_box.setStandardButtons(QMessageBox.Ok)
+        message_box.exec_()
