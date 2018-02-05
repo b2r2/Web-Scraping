@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-import sys
 import requests
 import re
-import gui
 from bs4 import BeautifulSoup
 
 
@@ -32,9 +30,3 @@ class Scraper():
         data = self.__load_content(url)
         content = self.__parse_text_data(data)
         return self.__get_text_size(content)
-
-
-if __name__ == '__main__':
-    app = gui.QApplication(sys.argv)
-    window = gui.MainWindow()
-    sys.exit(app.exec_())
