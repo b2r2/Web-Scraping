@@ -8,13 +8,12 @@ from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
 from web_scraping import Scraper
 
 
-class MainWindow(QWidget):
+class MainWindow(QWidget, Scraper):
     def __init__(self):
-        super(MainWindow, self).__init__()
+        super().__init__()
         self.__init_ui()
         self.show()
 
@@ -46,11 +45,16 @@ class MainWindow(QWidget):
         self.move(rectangle.topLeft())
 
     def __on_click(self, url):
-        size_text = Scraper().run(url)
-        output_text = 'All Russian symbols:' + os.linesep
+        size_text = self.run(url)
+        message = 'All Russian symbols:' + os.linesep
+        message_box = self.__get_message_box(message, str(size_text))
+        message_box.exec_()
+
+    def __get_message_box(self, message, size_text):
         message_box = QMessageBox()
-        message_box.setText(output_text + str(size_text))
+        message_box.setText(message + size_text)
         message_box.setWindowTitle('Counter')
+        message_box.setWindowIcon(QIcon('logo.png'))
         message_box.setIcon(QMessageBox.Information)
         message_box.setStandardButtons(QMessageBox.Ok)
-        message_box.exec_()
+        return message_box
