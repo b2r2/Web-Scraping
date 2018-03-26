@@ -15,7 +15,7 @@ class Scraper():
         self.session.headers.update(self.headers)
 
     def __load_content(self, url):
-        request = self.session.get(url)
+        request = self.session.get(url, timeout=5)
         return request.text
 
     def __parse_text_data(self, content):
