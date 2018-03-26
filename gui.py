@@ -45,7 +45,7 @@ class MainWindow(QWidget, Scraper):
         self.move(rectangle.topLeft())
 
     def __on_click(self, url):
-        size_text = super().run(url)
+        size_text = super().run(url=url)
         message = 'All Russian symbols:' + os.linesep
         message_box = self.__get_message_box(message, str(size_text))
         message_box.exec_()
