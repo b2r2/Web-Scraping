@@ -20,7 +20,9 @@ class Scraper():
 
     def __parse_text_data(self, content):
         soup = BeautifulSoup(content, 'lxml')
-        return soup.find('article', {'class': 'tl_article_content'}).text
+        soup.pre.decompose()
+        soup.figure.decompose()
+        return soup.find(name='article', attrs={'class': 'tl_article_content'}).text
 
     def __get_text_size(self, text):
         rus_letters = re.findall('[А-Яа-я]+', text)
