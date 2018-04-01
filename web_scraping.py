@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 
-import requests
-import re
+from re import findall
+from requests import Session
 from bs4 import BeautifulSoup
 
 
@@ -11,7 +11,7 @@ class Scraper():
         self.headers = {
             'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/58.0.3029.81 Chrome/58.0.3029.81 Safari/537.36'
         }
-        self.session = requests.Session()
+        self.session = Session()
         self.session.headers.update(self.headers)
 
     def __load_content(self, url):
@@ -22,10 +22,11 @@ class Scraper():
         soup = BeautifulSoup(content, 'lxml')
         soup.pre.decompose()
         soup.figure.decompose()
-        return soup.find(name='article', attrs={'class': 'tl_article_content'}).text
+        soup.article.address.decompose()
+        return soup.article.get_text(separator=' ', strip=True)
 
     def __get_text_size(self, text):
-        rus_letters = re.findall('[А-Яа-я]+', text)
+        rus_letters = findall('[А-Яа-я]+', text)
         return len(''.join(rus_letters))
 
     def run(self, url):
