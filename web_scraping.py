@@ -18,18 +18,28 @@ class Scraper():
         request = self.session.get(url, timeout=5)
         return request.text
 
-    def __parse_text_data(self, content):
-        soup = BeautifulSoup(content, 'lxml')
-        soup.pre.decompose()
-        soup.figure.decompose()
-        soup.article.address.decompose()
-        return soup.article.get_text(separator=' ', strip=True)
+    def __parse_text_data(self, content, pattern):
+        self.soup = BeautifulSoup(content, 'lxml')
+        select_pattern = {
+            'zen': self.__get_pattern_zen,
+            'telegraph': self.__get_pattern_tlg
+        }
+        select_pattern[pattern]()
+        return self.soup.article.get_text(separator=' ', strip=True)
+
+    def __get_pattern_zen(self):
+        self.soup.figure.decompose()
+
+    def __get_pattern_tlg(self):
+        self.soup.pre.decompose()
+        self.soup.figure.decompose()
+        self.soup.article.address.decompose()
 
     def __get_text_size(self, text):
         rus_letters = findall('[А-Яа-я]+', text)
         return len(''.join(rus_letters))
 
-    def run(self, url):
+    def run(self, url, pattern):
         data = self.__load_content(url)
-        content = self.__parse_text_data(data)
+        content = self.__parse_text_data(data, pattern)
         return self.__get_text_size(content)
