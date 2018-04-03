@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 
-from re import findall
+from re import IGNORECASE, compile, findall
 from requests import Session
 from bs4 import BeautifulSoup
 
@@ -13,6 +13,7 @@ class Scraper():
         }
         self.session = Session()
         self.session.headers.update(self.headers)
+        self.parser = compile(r'[а-я]', IGNORECASE)
 
     def __load_content(self, url):
         request = self.session.get(url, timeout=5)
@@ -20,24 +21,24 @@ class Scraper():
 
     def __parse_text_data(self, content, pattern):
         self.soup = BeautifulSoup(content, 'lxml')
-        select_pattern = {
+        state = {
             'zen': self.__get_pattern_zen,
-            'telegraph': self.__get_pattern_tlg
+            'telegraph': self.__get_pattern_telegraph
         }
-        select_pattern[pattern]()
+        state[pattern]()
         return self.soup.article.get_text(separator=' ', strip=True)
 
     def __get_pattern_zen(self):
         self.soup.figure.decompose()
 
-    def __get_pattern_tlg(self):
+    def __get_pattern_telegraph(self):
         self.soup.pre.decompose()
         self.soup.figure.decompose()
         self.soup.article.address.decompose()
 
     def __get_text_size(self, text):
-        rus_letters = findall('[А-Яа-я]+', text)
-        return len(''.join(rus_letters))
+        handled_text = findall(self.parser, text)
+        return len(handled_text)
 
     def run(self, url, pattern):
         data = self.__load_content(url)
