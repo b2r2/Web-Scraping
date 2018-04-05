@@ -20,12 +20,15 @@ class Scraper():
         return request.text
 
     def __parse_text_data(self, content, pattern):
-        self.soup = BeautifulSoup(content, 'lxml')
         state = {
             'zen': self.__get_pattern_zen,
             'telegraph': self.__get_pattern_telegraph
         }
-        state[pattern]()
+        self.soup = BeautifulSoup(content, 'lxml')
+        try:
+            state[pattern]()
+        except AttributeError as err:
+            print('I not found picture and/or quote!')
         return self.soup.article.get_text(separator=' ', strip=True)
 
     def __get_pattern_zen(self):
