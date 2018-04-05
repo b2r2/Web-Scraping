@@ -78,15 +78,3 @@ class MainWindow(QWidget, Scraper):
         message_box.setIcon(QMessageBox.Information)
         message_box.setStandardButtons(QMessageBox.Ok)
         return message_box
-
-
-if __name__ == '__main__':
-    import sys
-
-    class RunApp(MainWindow, Scraper):
-        def __init__(self):
-            app = QApplication(sys.argv)
-            super().__init__()
-            sys.exit(app.exec_())
-
-    RunApp()
