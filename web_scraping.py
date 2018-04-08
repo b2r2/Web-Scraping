@@ -1,19 +1,23 @@
 # -*- coding: utf-8 -*-
 
 
-from re import IGNORECASE, compile, findall
+import re
 from requests import Session
 from bs4 import BeautifulSoup
 
 
-class Scraper():
+class Scraper:
     def __init__(self):
         self.headers = {
-            'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu Chromium/58.0.3029.81 Chrome/58.0.3029.81 Safari/537.36'
+            'User-Agent': ('Mozilla/5.0 (X11; Linux x86_64)'
+                           ' AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu'
+                           ' Chromium/58.0.3029.81 Chrome/58.0.3029.81'
+                           ' Safari/537.36')
         }
         self.session = Session()
         self.session.headers.update(self.headers)
-        self.parser = compile(r'[а-я]', IGNORECASE)
+        self.parser = re.compile(r'[а-я]', re.IGNORECASE)
+        self.soup = None
 
     def __load_content(self, url):
         request = self.session.get(url, timeout=5)
@@ -27,7 +31,7 @@ class Scraper():
         self.soup = BeautifulSoup(content, 'lxml')
         try:
             state[pattern]()
-        except AttributeError as err:
+        except AttributeError:
             print('I not found picture and/or quote!')
         return self.soup.article.get_text(separator=' ', strip=True)
 
@@ -40,7 +44,7 @@ class Scraper():
         self.soup.article.address.decompose()
 
     def __get_text_size(self, text):
-        handled_text = findall(self.parser, text)
+        handled_text = re.findall(self.parser, text)
         return len(handled_text)
 
     def run(self, url, pattern):
