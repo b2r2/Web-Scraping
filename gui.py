@@ -5,10 +5,10 @@ from PyQt5.QtWidgets import QGridLayout
 from PyQt5.QtWidgets import QLineEdit
 from PyQt5.QtWidgets import QMessageBox
 from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QRadioButton
 from PyQt5.QtWidgets import QButtonGroup
+from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon
 from web_scraping import Scraper
@@ -19,7 +19,7 @@ class MainWindow(QWidget, Scraper):
         super().__init__()
         self.__init_ui()
         self.show()
-        self.web_site = 'zen'
+        self.web_site = 'telegraph'
 
     def __init_ui(self):
         url_button = QPushButton('Get', self)
@@ -27,9 +27,9 @@ class MainWindow(QWidget, Scraper):
         url_input = QLineEdit(self)
 
         label = QLabel('Select your website')
-        zen_button = QRadioButton('zen', self)
         tlg_button = QRadioButton('telegraph', self)
-        zen_button.setChecked(True)
+        zen_button = QRadioButton('zen', self)
+        tlg_button.setChecked(True)
 
         self.ratio_button_group = QButtonGroup()
         self.ratio_button_group.addButton(zen_button)
@@ -41,8 +41,8 @@ class MainWindow(QWidget, Scraper):
         grid.addWidget(url_button, 1, 1)
         grid.addWidget(quit_button, 4, 1)
         grid.addWidget(label, 2, 0)
-        grid.addWidget(zen_button, 3, 0)
-        grid.addWidget(tlg_button, 4, 0)
+        grid.addWidget(tlg_button, 3, 0)
+        grid.addWidget(zen_button, 4, 0)
 
         self.setLayout(grid)
 
