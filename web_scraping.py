@@ -4,10 +4,12 @@
 import re
 from requests import Session
 from bs4 import BeautifulSoup
+from patterns import Patterner
 
 
-class Scraper:
+class Scraper(Patterner):
     def __init__(self):
+        super().__init__()
         self.headers = {
             'User-Agent': ('Mozilla/5.0 (X11; Linux x86_64)'
                            ' AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu'
@@ -24,28 +26,16 @@ class Scraper:
         return request.text
 
     def __parse_text_data(self, content, pattern):
-        state = {
-            'zen': self.__get_pattern_zen,
-            'telegraph': self.__get_pattern_telegraph
-        }
         self.soup = BeautifulSoup(content, 'lxml')
         try:
-            state[pattern]()
-        except AttributeError:
-            print('I not found picture and/or quote!')
+            super().get_content(pattern)
+        except AttributeError as err:
+            print('I not found picture and/or quote!\n' + str(err))
         return self.soup.article.get_text(separator=' ', strip=True)
 
-    def __get_pattern_zen(self):
-        self.soup.figure.decompose()
-
-    def __get_pattern_telegraph(self):
-        self.soup.pre.decompose()
-        self.soup.figure.decompose()
-        self.soup.article.address.decompose()
-
     def __get_text_size(self, text):
-        handled_text = re.findall(self.parser, text)
-        return len(handled_text)
+        text = re.findall(self.parser, text)
+        return len(text)
 
     def run(self, url, pattern):
         data = self.__load_content(url)
