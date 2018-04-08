@@ -3,10 +3,9 @@
 
 import sys
 from gui import MainWindow, QApplication
-from web_scraping import Scraper
 
 
-class RunApp(MainWindow, Scraper):
+class Application(MainWindow):
     def __init__(self):
         app = QApplication(sys.argv)
         super().__init__()
@@ -14,4 +13,4 @@ class RunApp(MainWindow, Scraper):
 
 
 if __name__ == '__main__':
-    RunApp()
+    Application()
