@@ -18,20 +18,20 @@ class Scraper:
         self.session = Session()
         self.session.headers.update(self.headers)
         self.parser = re.compile(r'[а-я]', re.IGNORECASE)
-        self.soup = None
 
     def __load_content(self, url):
         request = self.session.get(url, timeout=5)
         return request.text
 
-    def __parse_text_data(self, content, pattern):
-        self.soup = BeautifulSoup(content, 'lxml')
+    @staticmethod
+    def __parse_text_data(content, pattern):
+        soup = BeautifulSoup(content, 'lxml')
         try:
             catalog = Catalog(pattern)
-            catalog.get_content(self.soup)
+            catalog.get_content(soup)
         except AttributeError as err:
             print('I not found picture and/or quote!\n' + str(err))
-        return self.soup.article.get_text(separator=' ', strip=True)
+        return soup.article.get_text(separator=' ', strip=True)
 
     def __get_text_size(self, text):
         text = re.findall(self.parser, text)
