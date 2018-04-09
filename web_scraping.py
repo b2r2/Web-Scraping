@@ -29,8 +29,8 @@ class Scraper:
         try:
             catalog = Catalog(pattern)
             catalog.get_content(soup)
-        except AttributeError as err:
-            print('I not found picture and/or quote!\n' + str(err))
+        except AttributeError:
+            raise AttributeError
         return soup.article.get_text(separator=' ', strip=True)
 
     def __get_text_size(self, text):
