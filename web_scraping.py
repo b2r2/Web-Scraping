@@ -4,12 +4,11 @@
 import re
 from requests import Session
 from bs4 import BeautifulSoup
-from patterns import Patterner
+from catalog import Catalog
 
 
-class Scraper(Patterner):
+class Scraper:
     def __init__(self):
-        super().__init__()
         self.headers = {
             'User-Agent': ('Mozilla/5.0 (X11; Linux x86_64)'
                            ' AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu'
@@ -28,7 +27,8 @@ class Scraper(Patterner):
     def __parse_text_data(self, content, pattern):
         self.soup = BeautifulSoup(content, 'lxml')
         try:
-            super().get_content(pattern)
+            catalog = Catalog(pattern)
+            catalog.get_content(self.soup)
         except AttributeError as err:
             print('I not found picture and/or quote!\n' + str(err))
         return self.soup.article.get_text(separator=' ', strip=True)
