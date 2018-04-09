@@ -8,7 +8,6 @@ from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtWidgets import QLabel
 from PyQt5.QtWidgets import QRadioButton
 from PyQt5.QtWidgets import QButtonGroup
-from PyQt5.QtWidgets import QApplication
 from PyQt5.QtCore import QCoreApplication
 from PyQt5.QtGui import QIcon
 from web_scraping import Scraper
@@ -70,7 +69,8 @@ class MainWindow(QWidget, Scraper):
     def __on_ratio_button_clicked(self, button):
         self.web_site = button.text()
 
-    def __get_message_box(self, message, size_text):
+    @staticmethod
+    def __get_message_box(message, size_text):
         message_box = QMessageBox()
         message_box.setText(message + size_text)
         message_box.setWindowTitle('Counter')
