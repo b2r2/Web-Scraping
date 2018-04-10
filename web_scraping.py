@@ -26,11 +26,8 @@ class Scraper:
     @staticmethod
     def __parse_text_data(content, pattern):
         soup = BeautifulSoup(content, 'lxml')
-        try:
-            catalog = Catalog(pattern)
-            catalog.get_content(soup)
-        except AttributeError:
-            raise AttributeError
+        catalog = Catalog(pattern)
+        catalog.get_content(soup)
         return soup.article.get_text(separator=' ', strip=True)
 
     def __get_text_size(self, text):
