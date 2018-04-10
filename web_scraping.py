@@ -34,7 +34,9 @@ class Scraper:
         text = re.findall(self.parser, text)
         return len(text)
 
-    def run(self, url, pattern):
+
+    def run(self, url):
+        pattern = 'zen' if 'zen' in url else 'telegraph'
         data = self.__load_content(url)
         content = self.__parse_text_data(data, pattern)
         return self.__get_text_size(content)
