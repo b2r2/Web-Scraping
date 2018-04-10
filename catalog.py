@@ -15,12 +15,23 @@ class Catalog:
     def get_content(self, soup):
         return self._catalog[self.pattern](soup)
 
-    @staticmethod
-    def __handle_zen(soup):
-        soup.figure.decompose()
+    def __handle_zen(self, soup):
+        self.__handle_figure(soup)
+
+    def __handle_telegraph(self, soup):
+        self.__handle_pre(soup)
+        self.__handle_figure(soup)
 
     @staticmethod
-    def __handle_telegraph(soup):
-        soup.pre.decompose()
-        soup.figure.decompose()
-        soup.article.address.decompose()
+    def __handle_pre(soup):
+        try:
+            soup.pre.decompose()
+        except AttributeError as err:
+            print('<pre>: Quote not found({})'.format(err))
+
+    @staticmethod
+    def __handle_figure(soup):
+        try:
+            soup.figure.decompose()
+        except AttributeError as err:
+            print('<figure>: Picture not found({})'.format(err))
