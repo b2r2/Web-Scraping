@@ -25,7 +25,7 @@ class MainWindow(QWidget, Scraper):
         grid.setSpacing(1)
         grid.addWidget(url_input, 1, 0)
         grid.addWidget(url_button, 1, 1)
-        grid.addWidget(quit_button, 4, 1)
+        grid.addWidget(quit_button, 2, 1)
 
         self.setLayout(grid)
 
