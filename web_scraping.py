@@ -27,7 +27,8 @@ class Scraper:
     def __parse_text_data(content, pattern):
         soup = BeautifulSoup(content, 'lxml')
         catalog = Catalog(pattern)
-        catalog.get_content(soup)
+        catalog.set_soup(soup)
+        catalog.get_content()
         return soup.article.get_text(separator=' ', strip=True)
 
     def __get_text_size(self, text):

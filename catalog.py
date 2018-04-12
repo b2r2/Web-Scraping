@@ -3,6 +3,7 @@
 
 class Catalog:
     def __init__(self, pattern):
+        self.soup = None
         self._catalog = {
             'zen': self.__handle_zen,
             'telegraph': self.__handle_telegraph,
@@ -12,26 +13,27 @@ class Catalog:
         else:
             raise ValueError('Invalid value for Pattern: {0}'.format(pattern))
 
-    def get_content(self, soup):
-        return self._catalog[self.pattern](soup)
+    def set_soup(self, soup):
+        self.soup = soup
 
-    def __handle_zen(self, soup):
-        self.__handle_figure(soup)
+    def get_content(self):
+        return self._catalog[self.pattern]()
 
-    def __handle_telegraph(self, soup):
-        self.__handle_pre(soup)
-        self.__handle_figure(soup)
+    def __handle_zen(self):
+        self.__handle_figure()
 
-    @staticmethod
-    def __handle_pre(soup):
+    def __handle_telegraph(self):
+        self.__handle_pre()
+        self.__handle_figure()
+
+    def __handle_pre(self):
         try:
-            soup.pre.decompose()
+            self.soup.pre.decompose()
         except AttributeError as err:
             print('<pre>: Quote not found({})'.format(err))
 
-    @staticmethod
-    def __handle_figure(soup):
+    def __handle_figure(self):
         try:
-            soup.figure.decompose()
+            self.soup.figure.decompose()
         except AttributeError as err:
             print('<figure>: Picture not found({})'.format(err))
