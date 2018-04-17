@@ -9,6 +9,7 @@ from catalog import Catalog
 
 class Scraper:
     def __init__(self):
+        self.soup = None
         self.headers = {
             'User-Agent': ('Mozilla/5.0 (X11; Linux x86_64)'
                            ' AppleWebKit/537.36 (KHTML, like Gecko) Ubuntu'
@@ -23,13 +24,12 @@ class Scraper:
         request = self.session.get(url, timeout=5)
         return request.text
 
-    @staticmethod
-    def __parse_text_data(content, pattern):
-        soup = BeautifulSoup(content, 'lxml')
+    def __parse_text_data(self, content, pattern):
+        self.soup = BeautifulSoup(content, 'lxml')
         catalog = Catalog(pattern)
-        catalog.set_soup(soup)
+        catalog.set_soup(self.soup)
         catalog.get_content()
-        return soup.article.get_text(separator=' ', strip=True)
+        return self.soup.article.get_text(separator=' ', strip=True)
 
     def __get_text_size(self, text):
         text = re.findall(self.parser, text)
@@ -37,7 +37,7 @@ class Scraper:
 
 
     def run(self, url):
-        pattern = 'zen' if 'zen' in url else 'telegraph'
+        pattern = 'zen' if 'zen' in url else ('telegra' if 'telegra' in url else 'none')
         data = self.__load_content(url)
         content = self.__parse_text_data(data, pattern)
         return self.__get_text_size(content)
