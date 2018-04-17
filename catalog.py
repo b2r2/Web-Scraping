@@ -1,4 +1,5 @@
 #-*- coding: utf-8 -*-
+from utils import catch_exception
 
 
 class Catalog:
@@ -6,7 +7,8 @@ class Catalog:
         self.soup = None
         self._catalog = {
             'zen': self.__handle_zen,
-            'telegraph': self.__handle_telegraph,
+            'telegra': self.__handle_telegraph,
+            'none': lambda: print('There is no pattern'),
         }
         if pattern in self._catalog.keys():
             self.pattern = pattern
@@ -26,14 +28,10 @@ class Catalog:
         self.__handle_pre()
         self.__handle_figure()
 
+    @catch_exception
     def __handle_pre(self):
-        try:
-            self.soup.pre.decompose()
-        except AttributeError as err:
-            print('<pre>: Quote not found({})'.format(err))
+        self.soup.pre.decompose()
 
+    @catch_exception
     def __handle_figure(self):
-        try:
-            self.soup.figure.decompose()
-        except AttributeError as err:
-            print('<figure>: Picture not found({})'.format(err))
+        self.soup.figure.decompose()
