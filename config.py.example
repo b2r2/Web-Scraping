@@ -1,0 +1,4 @@
+PROXIES = {
+    'http': 'socks5://user:pass@host:port',
+    'https': 'socks5://user:pass@host:port',
+}
