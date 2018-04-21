@@ -5,6 +5,7 @@ import re
 from requests import Session
 from bs4 import BeautifulSoup
 from catalog import Catalog
+from config import PROXIES
 
 
 class Scraper:
@@ -21,7 +22,7 @@ class Scraper:
         self.parser = re.compile(r'[а-я]', re.IGNORECASE)
 
     def __load_content(self, url):
-        request = self.session.get(url, timeout=5)
+        request = self.session.get(url, timeout=5, proxies=PROXIES)
         return request.text
 
     def __parse_text_data(self, content, pattern):
