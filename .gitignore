@@ -2,3 +2,4 @@ pyqt5/
 __pycache__/
 *.pyc
 config.py
+*.ui
