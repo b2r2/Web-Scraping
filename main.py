@@ -2,16 +2,22 @@
 
 
 import sys
-from gui import MainWindow
-from PyQt5.QtWidgets import QApplication
+import gui
+from PyQt5 import QtWidgets
 
 
-class Application(MainWindow):
+class CounterApp(QtWidgets.QMainWindow, gui.UIMainWindow):
     def __init__(self):
-        app = QApplication(sys.argv)
         super().__init__()
-        sys.exit(app.exec_())
+        self.setup_ui(self)
+
+
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    window = CounterApp()
+    window.show()
+    app.exec_()
 
 
 if __name__ == '__main__':
-    Application()
+    main()

@@ -1,60 +1,53 @@
-import os
-from PyQt5.QtWidgets import QWidget
-from PyQt5.QtWidgets import QPushButton
-from PyQt5.QtWidgets import QGridLayout
-from PyQt5.QtWidgets import QLineEdit
-from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.QtCore import QCoreApplication
-from PyQt5.QtGui import QIcon
-from web_scraping import Scraper
+# -*- coding: utf-8 -*-
 
+from PyQt5 import QtCore, QtGui, QtWidgets
+from scraper import Scraper
 
-class MainWindow(QWidget, Scraper):
-    def __init__(self):
-        super().__init__()
-        self.__init_ui()
-        self.show()
+class UIMainWindow:
+    def setup_ui(self, main_window):
+        main_window.setObjectName("MainWindow")
+        main_window.resize(240, 100)
+        main_window.setMinimumSize(QtCore.QSize(240, 100))
+        main_window.setMaximumSize(QtCore.QSize(240, 100))
+        self.icon = QtGui.QIcon()
+        self.icon.addPixmap(QtGui.QPixmap("logo.png"), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        main_window.setWindowIcon(self.icon)
+        self.central_widget = QtWidgets.QWidget(main_window)
+        self.central_widget.setObjectName("centralwidget")
+        self.form_layout = QtWidgets.QFormLayout(self.central_widget)
+        self.form_layout.setObjectName("formLayout")
+        self.line_edit = QtWidgets.QLineEdit(self.central_widget)
+        self.line_edit.setObjectName("lineEdit")
+        self.form_layout.setWidget(0, QtWidgets.QFormLayout.LabelRole, self.line_edit)
+        self.message_box = QtWidgets.QMessageBox()
+        self.message_box.setObjectName("messageBox")
+        self.message_box.setWindowTitle("Counter")
+        self.result_btn = QtWidgets.QPushButton(self.central_widget)
+        self.result_btn.setObjectName("Result")
+        self.result_btn.clicked.connect(lambda: self.on_click(self.line_edit.text()))
+        self.form_layout.setWidget(0, QtWidgets.QFormLayout.FieldRole, self.result_btn)
+        self.exit_btn = QtWidgets.QPushButton(self.central_widget)
+        self.exit_btn.setObjectName("Exit")
+        self.exit_btn.clicked.connect(QtCore.QCoreApplication.instance().quit)
+        self.form_layout.setWidget(1, QtWidgets.QFormLayout.FieldRole, self.exit_btn)
+        main_window.setCentralWidget(self.central_widget)
 
-    def __init_ui(self):
-        url_button = QPushButton('Get', self)
-        quit_button = QPushButton('Quit', self)
-        url_input = QLineEdit(self)
+        self.retranslate_ui(main_window)
+        QtCore.QMetaObject.connectSlotsByName(main_window)
 
-        grid = QGridLayout()
-        grid.setSpacing(1)
-        grid.addWidget(url_input, 1, 0)
-        grid.addWidget(url_button, 1, 1)
-        grid.addWidget(quit_button, 2, 1)
+    def retranslate_ui(self, main_window):
+        _translate = QtCore.QCoreApplication.translate
+        main_window.setWindowTitle(_translate("MainWindow", "Counter"))
+        self.result_btn.setText(_translate("MainWindow", "Result"))
+        self.exit_btn.setText(_translate("MainWindow", "Exit"))
 
-        self.setLayout(grid)
+    def on_click(self, url):
+        _size = Scraper().run(url)
+        self.get_message_box(_size)
 
-        url_button.clicked.connect(lambda: self.__on_click(url_input.text()))
-        quit_button.clicked.connect(QCoreApplication.instance().quit)
-
-        self.__move_to_center(300, 10)
-        self.setWindowTitle('Counter')
-        self.setWindowIcon(QIcon('logo.png'))
-
-    def __move_to_center(self, width, height):
-        self.resize(width, height)
-        rectangle = self.frameGeometry()
-        center_point = QDesktopWidget().availableGeometry().center()
-        rectangle.moveCenter(center_point)
-        self.move(rectangle.topLeft())
-
-    def __on_click(self, url):
-        size_text = super().run(url)
-        message = 'All Russian symbols:' + os.linesep
-        message_box = self.__get_message_box(message, str(size_text))
-        message_box.exec_()
-
-    @staticmethod
-    def __get_message_box(message, size_text):
-        message_box = QMessageBox()
-        message_box.setText(message + size_text)
-        message_box.setWindowTitle('Counter')
-        message_box.setWindowIcon(QIcon('logo.png'))
-        message_box.setIcon(QMessageBox.Information)
-        message_box.setStandardButtons(QMessageBox.Ok)
-        return message_box
+    def get_message_box(self, _size):
+        self.message_box.setText(str(_size))
+        self.message_box.setIcon(QtWidgets.QMessageBox.Information)
+        self.message_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
+        self.message_box.setWindowIcon(self.icon)
+        self.message_box.show()
