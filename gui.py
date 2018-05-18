@@ -46,7 +46,8 @@ class UIMainWindow:
         self.get_message_box(_size)
 
     def get_message_box(self, _size):
-        self.message_box.setText(str(_size))
+        message = "All Cyrillic characters\n" + str(_size)
+        self.message_box.setText(message)
         self.message_box.setIcon(QtWidgets.QMessageBox.Information)
         self.message_box.setStandardButtons(QtWidgets.QMessageBox.Ok)
         self.message_box.setWindowIcon(self.icon)
