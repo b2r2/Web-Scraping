@@ -8,7 +8,7 @@ class Catalog:
         self._catalog = {
             'zen': self.__handle_zen,
             'telegra': self.__handle_telegraph,
-            'none': lambda: print('There is no pattern'),
+            'medium': self.__handle_medium,
         }
         if pattern in self._catalog.keys():
             self.pattern = pattern
@@ -25,6 +25,10 @@ class Catalog:
         self.__handle_figure()
 
     def __handle_telegraph(self):
+        self.__handle_pre()
+        self.__handle_figure()
+
+    def __handle_medium(self):
         self.__handle_pre()
         self.__handle_figure()
 
