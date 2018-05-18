@@ -21,8 +21,8 @@ class Scraper:
         self.session.headers.update(self.headers)
         self.parser = re.compile(r'[а-я]', re.IGNORECASE)
 
-    def __load_content(self, url):
-        request = self.session.get(url, timeout=5, proxies=PROXIES)
+    def __load_content(self, url, proxy=None):
+        request = self.session.get(url, timeout=5, proxies=proxy)
         return request.text
 
     def __parse_text_data(self, content, pattern):
@@ -36,9 +36,9 @@ class Scraper:
         text = re.findall(self.parser, text)
         return len(text)
 
-
     def run(self, url):
-        pattern = 'zen' if 'zen' in url else ('telegra' if 'telegra' in url else 'none')
-        data = self.__load_content(url)
-        content = self.__parse_text_data(data, pattern)
+        self.pattern = url.split('/')[2].split('.')[0]
+        proxy = PROXIES if self.pattern == 'telegra' else None
+        data = self.__load_content(url, proxy)
+        content = self.__parse_text_data(data, self.pattern)
         return self.__get_text_size(content)
