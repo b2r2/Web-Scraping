@@ -1,5 +1,5 @@
 #-*- coding: utf-8 -*-
-from utils import catch_exception
+from utils import catch_exception_attribute_err
 
 
 class Catalog:
@@ -28,10 +28,10 @@ class Catalog:
         self.__handle_pre()
         self.__handle_figure()
 
-    @catch_exception
+    @catch_exception_attribute_err
     def __handle_pre(self):
         self.soup.pre.decompose()
 
-    @catch_exception
+    @catch_exception_attribute_err
     def __handle_figure(self):
         self.soup.figure.decompose()
