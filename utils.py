@@ -1,7 +1,7 @@
 import functools
 
 
-def catch_exception(f):
+def catch_exception_attribute_err(f):
     @functools.wraps(f)
     def func(*args, **kwargs):
         try:
@@ -9,4 +9,3 @@ def catch_exception(f):
         except AttributeError as err:
             print('{}: {}'.format(err, f.__name__))
     return func
-
