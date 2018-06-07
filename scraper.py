@@ -20,7 +20,7 @@ class Scraper:
         }
         self.session = Session()
         self.session.headers.update(self.headers)
-        self.parser = re.compile(r'[а-я]', re.IGNORECASE)
+        self.parser = re.compile(r'[а-яё]', re.IGNORECASE)
 
     def __load_content(self, url, proxy=None):
         request = self.session.get(url, timeout=5, proxies=proxy)
